@@ -1,0 +1,3 @@
+{% extends "base.html" %} {% block title %} Changed title {% endblock title %}
+{% block body %} {% spaceless %}{% for post in posts %} {{ post.text }} {{
+post.date }} {% endfor %}{% endspaceless %}{% endblock body %}
