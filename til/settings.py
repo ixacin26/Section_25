@@ -39,7 +39,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'django.contrib.sites',
+
     'feed',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +55,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    
+    'allauth.account.middleware.AccountMiddleware',
 ]
 
 ROOT_URLCONF = 'til.urls'
@@ -58,7 +65,8 @@ TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': [
-          os.path.join(PROJECT_DIR, "til/templates")
+        #   os.path.join(PROJECT_DIR, "til/templates")
+        BASE_DIR / "til/templates"
         ],
         'APP_DIRS': True,
         'OPTIONS': {
@@ -67,6 +75,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -120,9 +129,31 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
-STATIC_URL = 'static/'
+STATIC_URL = '/static/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+SITE_ID = 1
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/"
+ACCOUNT_AUTHENTICATION_METHOD = "email"
+ACCOUNT_CONFIRM_EMAIL_ON_GET = True
+ACCOUNT_EMAIL_REQUIRED = True
+ACCOUNT_EMAIL_VERIFICATION = "optional"
+ACCOUNT_LOGIN_ON_EMAIL_CONFIRMATION = True
+ACCOUNT_LOGOUT_ON_GET = True
+ACCOUNT_LOGIN_ON_PASSWORD_RESET = True
+ACCOUNT_LOGOUT_REDIRECT = "/"
+ACCOUNT_PRESERVE_USERNAME_CASING = False
+ACCOUNT_SESSION_REMEMBER = True
+ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = True
+ACCOUNT_USERNAME_MIN_LENGTH = 2
+AUTHENTICATION_BACKENDS = (
+    "django.contrib.auth.backends.ModelBackend",
+    "allauth.account.auth_backends.AuthenticationBackend",
+)
+
+

@@ -3,9 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>{% block title %} {% endblock title %}</title>
+    <title>{% block title %} Default Title in here {% endblock %}</title>
   </head>
   <body>
-    {% block body %} Default {% endblock body %}
+    This is our Base.html<br>
+
+    {% if request.user.is_authenticated %}
+      <a href = "{% url 'account_logout' %}"> Logout</a>
+    {% else %}
+      <a href = "{% url 'account_login' %}"> Login</a>
+      
+    {% endif %}
+    <hr>
+    {% block body %} {% block content %} {% endblock content %}{% endblock body %}
   </body>
 </html>

@@ -1,3 +1,10 @@
-{% extends "base.html" %} {% block title %} Changed title {% endblock title %}
-{% block body %} {% spaceless %}{% for post in posts %} {{ post.text }} {{
-post.date }} {% endfor %}{% endspaceless %}{% endblock body %}
+{% extends "base.html" %}
+
+{% block title %} Changed title {% endblock %}
+
+{% block body %}
+    {% for post in posts %}
+        {{ post.text }} written on {{ post.date }}
+        <hr>
+    {% endfor %}
+{% endblock %}
