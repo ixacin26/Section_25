@@ -16,8 +16,20 @@ class Profile(models.Model):
     )
     image = ImageField(upload_to="profiles")
 
+    
+    
+
     def __str__(self):
         return self.user.username
+#Number of follower    
+def follower_count(self):
+        return self.following.count()
+#Number of authors user is following
+def follows_count(self):
+        return self.followed_by.count()
+
+User.add_to_class("follower_count", follower_count)
+User.add_to_class("follows_count", follows_count)
 
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):

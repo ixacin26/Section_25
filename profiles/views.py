@@ -25,12 +25,13 @@ class ProfileDetailView(DetailView):
     user=self.get_object()
     context = super().get_context_data(**kwargs)
     context["total_posts"] = Post.objects.filter(author=user).count()
-    # context["total_followers"] = "To be updated"
+    # TODO final project with help from chatgpt
+    context["total_followers"] = user.follower_count()
+    context["total_follows"] = user.follows_count()
     if self.request.user.is_authenticated:
       context["you_follow"] = Follower.objects.filter(following=user, followed_by=self.request.user).exists()
     return context
   
-  # TODO final project "show number of followers"
   
   
 class FollowView(LoginRequiredMixin, View):

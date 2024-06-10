@@ -20,8 +20,9 @@ class HomePage(TemplateView):
     if self.request.user.is_authenticated:
       following = list(Follower.objects.filter(followed_by=self.request.user).values_list("following", flat=True))
       if not following:
-        # show the default 30
+      # show the default 30
         posts = Post.objects.all().order_by("-id")[0:30]
+      # show only post of author followed
       else:
         posts = Post.objects.filter(author__in=following).order_by("-id")[0:60]
     else:

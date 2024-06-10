@@ -23,7 +23,17 @@
       </div>
       {% if user.is_authenticated %}
         <p class="ml-2 text-sm text-center tracking-wide truncate">Logged in as {{ request.user.username }}!</p>
-        <p class="ml-2 text-sm text-center tracking-wide truncate">You are following  {{ request.user.username }} author(s)!</p>
+        {% if total_follows > 0 %}
+        <p class="ml-2 text-sm text-center tracking-wide truncate">You are following {{ total_follows|default:"0" }} author(s)!</p>
+        {% else %}
+        <p class="ml-2 text-sm text-center tracking-wide truncate">You are following no author!</p>
+        {% endif %}
+         
+          {% comment %} {% if total_follows == "0" %}
+          <p class="ml-2 text-sm text-center tracking-wide truncate">You are following no author!</p>
+          {% else %}
+          <p class="ml-2 text-sm text-center tracking-wide truncate">You are following {{ total_follows }} author(s)!</p>
+          {% endif %} {% endcomment %}
 
       {% else %}
         <p class="ml-2 text-center text-sm tracking-wide truncate">Hello, Guest!</p>
@@ -57,6 +67,7 @@
                 <span class="ml-2 text-sm tracking-wide truncate">New Post</span>
               </a>
             </li>
+            <li>
             <li>
             <a href="{% url 'account_logout' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
               <span class="inline-flex justify-center items-center ml-4">
