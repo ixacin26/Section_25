@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Create a new post {% endblock title %}
+
+{% block body %}
+    <form method="POST" action=".">
+    {% csrf_token %}
+    {{ form.as_p}}
+
+        <div>
+            <button class="flex px-3 py-2 bg-red-400 mr-1 mt-3 text-white font-semibold rounded" type="submit">
+        <span class="ml-1">Create Post</span>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L11 13" />
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M22 2L15 22 11 13 2 9l20-7z" />      
+        </svg>
+
+    </button>
+        </div>
+    </form>
+{% endblock body %}
