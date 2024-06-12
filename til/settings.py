@@ -84,6 +84,8 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'django.template.context_processors.request',
+                'til.context_processors.follower_counts',
+                'profiles.context_processors.user_counts',
             ],
         },
     },

@@ -20,14 +20,15 @@
     <div class="fixed flex flex-col top-0 left-0 w-64 bg-white h-full border-r">
       <div class="flex items-center justify-center h-14 border-b">
         <div>TIL</div>
-      </div>
-      {% if user.is_authenticated %}
-        <p class="ml-2 text-sm text-center tracking-wide truncate">Logged in as {{ request.user.username }}!</p>
-        {% if total_follows > 0 %}
-        <p class="ml-2 text-sm text-center tracking-wide truncate">You are following {{ total_follows|default:"0" }} author(s)!</p>
-        {% else %}
-        <p class="ml-2 text-sm text-center tracking-wide truncate">You are following no author!</p>
-        {% endif %}
+        </div>
+        {% if user.is_authenticated %}
+          <p class="ml-2 text-sm text-center tracking-wide truncate">{{ user_total_followers|default:"0" }} / {{ user_total_follows|default:"0" }}</p>
+          <p class="ml-2 text-sm text-center tracking-wide truncate">Logged in as {{ request.user.username }}!</p>
+          {% if user_total_follows > 0 %}
+            <p class="ml-2 text-sm text-center tracking-wide truncate">You are following {{ user_total_follows }} author(s)!</p>
+          {% else %}
+            <p class="ml-2 text-sm text-center tracking-wide truncate">You are following no author!</p>
+          {% endif %}
          
           {% comment %} {% if total_follows == "0" %}
           <p class="ml-2 text-sm text-center tracking-wide truncate">You are following no author!</p>
@@ -68,6 +69,15 @@
               </a>
             </li>
             <li>
+            {% comment %} TODO add url to account information {% endcomment %}
+            <a href="{% url 'account_logout' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
+              <span class="inline-flex justify-center items-center ml-4">
+                <svg class="w-5 h-5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                </svg>
+              </span>
+              <span class="ml-2 text-sm tracking-wide truncate">Account</span>
+            </a>
+            </li>
             <li>
             <a href="{% url 'account_logout' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">
               <span class="inline-flex justify-center items-center ml-4">

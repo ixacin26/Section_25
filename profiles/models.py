@@ -15,6 +15,8 @@ class Profile(models.Model):
 
     )
     image = ImageField(upload_to="profiles")
+    name = models.CharField(max_length=100, blank=True)
+    bio = models.TextField(blank=True, null=True)
 
     
     
@@ -23,16 +25,18 @@ class Profile(models.Model):
         return self.user.username
 #Number of follower    
 def follower_count(self):
-        return self.following.count()
+        return self.followers.count()
 #Number of authors user is following
 def follows_count(self):
-        return self.followed_by.count()
+        return self.following.count()
 
 User.add_to_class("follower_count", follower_count)
 User.add_to_class("follows_count", follows_count)
 
 @receiver(post_save, sender=User)
-def create_user_profile(sender, instance, created, **kwargs):
-    # Create a new Profile() object when a Django User is created
+def create_or_update_user_profile(sender, instance, created, **kwargs):
+    # Create or update a new Profile() object when a Django User is created
     if created:
         Profile.objects.create(user=instance)
+    instance.profile.save()
+    
