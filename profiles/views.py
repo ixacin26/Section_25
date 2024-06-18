@@ -2,6 +2,10 @@ from django.contrib.auth.models import User
 from django.views.generic import DetailView, View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import JsonResponse,HttpResponseBadRequest
+from django.shortcuts import render, redirect
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required  # Import login_required
+from .forms import UpdateUserForm, UpdateProfileForm
 
 from feed.models import Post
 from followers.models import Follower
@@ -71,3 +75,26 @@ class FollowView(LoginRequiredMixin, View):
       'done': True,
       "wording": "Unfollow" if data["action"] == "follow" else "Follow",
     })
+
+@login_required
+def update_profile(request):
+    if request.method == 'POST':
+        user_form = UpdateUserForm(request.POST, instance=request.user)
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+
+        if user_form.is_valid() and profile_form.is_valid():
+            user_form.save()
+            profile_form.save()
+            messages.success(request, 'Your profile has been updated successfully!')
+            return redirect('profiles:detail', username=request.user.username)  # Redirect to the user's profile page
+
+    else:
+        user_form = UpdateUserForm(instance=request.user)
+        profile_form = UpdateProfileForm(instance=request.user.profile)
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form
+    }
+
+    return render(request, 'profiles/update_profile.html', context)

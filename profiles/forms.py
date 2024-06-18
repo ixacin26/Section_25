@@ -1,5 +1,4 @@
 from django import forms
-
 from django.contrib.auth.models import User
 from .models import Profile
 
@@ -7,9 +6,9 @@ from .models import Profile
 class UpdateUserForm(forms.ModelForm):
     username = forms.CharField(max_length=100,
                                required=True,
-                               widget=forms.TextInput(attrs={'class': 'form-control'}))
+                               widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter username'}))
     email = forms.EmailField(required=True,
-                             widget=forms.TextInput(attrs={'class': 'form-control'}))
+                             widget=forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Enter email adress'}))
 
     class Meta:
         model = User
@@ -17,9 +16,9 @@ class UpdateUserForm(forms.ModelForm):
 
 
 class UpdateProfileForm(forms.ModelForm):
-    avatar = forms.ImageField(widget=forms.FileInput(attrs={'class': 'form-control-file'}))
-    bio = forms.CharField(widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5}))
+    image = forms.ImageField(required=False, widget=forms.FileInput(attrs={'class': 'form-control-file'}), help_text="Upload an image file for your profile picture.")
+    bio = forms.CharField(required=False, widget=forms.Textarea(attrs={'class': 'form-control', 'rows': 5, 'placeholder': 'Tell us something about yourself'}))
 
     class Meta:
         model = Profile
-        fields = ['avatar', 'bio']
+        fields = ['image', 'bio']
