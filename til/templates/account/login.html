@@ -1,50 +1,50 @@
 {% extends 'base.html' %}
-{% comment %} {% extends 'account/base_entrance.html' %} {% endcomment %}
-
 {% load i18n %}
 {% load allauth account %}
+
 {% block head_title %}
   {% trans 'Sign In' %}
 {% endblock %}
+
 {% block content %}
-  {% element h1 %}
-  {% trans 'Sign In' %}
-  {% endelement %}
-  {% if not SOCIALACCOUNT_ONLY %}
-    {% setvar link %}
-    <a href="{{ signup_url }}">
-      {% endsetvar %}
-      {% setvar end_link %}
-    </a>
-    {% endsetvar %}
-    {% element p %}
-    {% blocktranslate %}If you have not created an account yet, then please {{ link }}sign up{{ end_link }} first.{% endblocktranslate %}
-    {% endelement %}
-    {% url 'account_login' as login_url %}
-    {% element form form=form method='post' action=login_url tags='entrance,login' %}
-    {% slot body %}
-    {% csrf_token %}
-    {% element fields form=form unlabeled=True %}
-    {% endelement %}
-    {{ redirect_field }}
-    {% endslot %}
-    {% slot actions %}
-    {% element button type='submit' tags='prominent,login' %}
-    {% trans 'Sign In' %}
-    {% endelement %}
-    {% endslot %}
-    {% endelement %}
-  {% endif %}
-  {% if LOGIN_BY_CODE_ENABLED %}
-    {% element hr %}
-    {% endelement %}
-    {% element h2 %}
-    {% element button href=request_login_code_url tags='prominent,login,secondary' %}
-    {% trans 'Mail me a sign-in code' %}
-    {% endelement %}
-    {% endelement %}
-  {% endif %}
-  {% if SOCIALACCOUNT_ENABLED %}
-    {% include 'socialaccount/snippets/login.html' with page_layout='entrance' %}
-  {% endif %}
+  <div class="min-h-screen flex bg-gray-100 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-md w-full space-y-8">
+      <div>
+        <h1 class="mt-6 text-center text-3xl font-extrabold text-gray-900">{% trans 'Sign In' %}</h1>
+        {% if not SOCIALACCOUNT_ONLY %}
+          <p class="mt-2 text-center text-sm text-gray-600">
+            {% blocktranslate %}If you have not created an account yet, then please <a href="{{ signup_url }}" class="font-medium text-indigo-600 hover:text-indigo-500">sign up</a> first.{% endblocktranslate %}
+          </p>
+        {% endif %}
+      </div>
+      <form class="mt-8 space-y-6" method="post" action="{% url 'account_login' %}">
+        {% csrf_token %}
+        <input type="hidden" name="redirect_field_name" value="{{ redirect_field }}" />
+        <div class="rounded-md shadow-sm -space-y-px">
+          {% for field in form %}
+            <div>{{ field.label_tag }}
+              {{ field }}
+              {{ field.errors }}</div>
+          {% endfor %}
+        </div>
+        <div>
+          <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{% trans 'Sign In' %}</button>
+        </div>
+      </form>
+      {% if LOGIN_BY_CODE_ENABLED %}
+        <div class="mt-6">
+          <hr class="border-t border-gray-200" />
+          <h2 class="mt-6 text-center text-xl font-bold text-gray-900">{% trans 'Or' %}</h2>
+          <div class="mt-2">
+            <a href="{{ request_login_code_url }}" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-indigo-700 bg-white hover:bg-indigo-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">{% trans 'Mail me a sign-in code' %}</a>
+          </div>
+        </div>
+      {% endif %}
+      {% if SOCIALACCOUNT_ENABLED %}
+        <div class="mt-6">
+          {% include 'socialaccount/snippets/login.html' with page_layout='entrance' %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
 {% endblock %}
